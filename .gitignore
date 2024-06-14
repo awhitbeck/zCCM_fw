@@ -34,6 +34,7 @@ Thumps.db
 build.info
 
 # Build directories 
+petalinux*
 build*
 images*
 bin*
