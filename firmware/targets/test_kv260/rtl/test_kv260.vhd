@@ -38,7 +38,7 @@ entity test_kv260 is
       BUILD_INFO_G : BuildInfoType;
       SIMULATION_G      : boolean              := false;
       AXIL_CLK_FREQ_G   : real                 := 125.0e6;
-      AXIL_BASE_ADDR_G  : slv(31 downto 0)     := X"00000000");
+      AXIL_BASE_ADDR_G  : slv(31 downto 0)     := X"8000_0000");
     Port (
       -- Kria K26 I/O Ports
       pmod       : inout slv(7 downto 0);
