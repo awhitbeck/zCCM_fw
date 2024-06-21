@@ -19,7 +19,7 @@ class uart_bridge(pr.Device):
         super().__init__(description=description, **kwargs)
 
 
-    self.addRemoteVariables(
+        self.addRemoteVariables(
             name         = 'SCRATCH',
             description  = 'Scratch register',
             offset       = 0x38,
