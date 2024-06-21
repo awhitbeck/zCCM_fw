@@ -31,6 +31,7 @@ use surf.I2cPkg.all;
 library axi_soc_ultra_plus_core;
 use axi_soc_ultra_plus_core.AxiSocUltraPlusPkg.all;
 
+library ldmx_ts;
 
 entity test_kv260 is
     generic (
@@ -54,9 +55,10 @@ architecture Behavioral of test_kv260 is
 
    constant DMA_SIZE_C           : positive := 2;
    constant AXIL_CLK_FREQ_C      : real     := 1.0/AXIL_CLK_FREQ_G;  
-   constant MAIN_XBAR_MASTERS_C  : natural  := 2;
+   constant MAIN_XBAR_MASTERS_C  : natural  := 3;
    constant AXIL_VERSION_INDEX_C : natural  := 0;
    constant AXIL_LOC_I2C_INDEX_C : natural  := 1;
+   constant AXIL_TOP_REG_INDEX_C : natural  := 2;    
 
    constant MAIN_XBAR_CFG_C : AxiLiteCrossbarMasterConfigArray(MAIN_XBAR_MASTERS_C-1 downto 0) := (
      AXIL_VERSION_INDEX_C             => (
@@ -65,6 +67,10 @@ architecture Behavioral of test_kv260 is
        connectivity                   => X"0001"),
      AXIL_LOC_I2C_INDEX_C             => (    -- backplane I2C Interface
          baseAddr                     => AXIL_BASE_ADDR_G + X"1000",
+         addrBits                     => 8,
+         connectivity                 => X"0001"),
+     AXIL_TOP_REG_INDEX_C             => (    -- Register Interface
+         baseAddr                     => AXIL_BASE_ADDR_G + X"3000",
          addrBits                     => 8,
          connectivity                 => X"0001"));
 
@@ -92,8 +98,8 @@ architecture Behavioral of test_kv260 is
 
 begin
 
-  -----------------------
-   U_Core : entity axi_soc_ultra_plus_core.AxiSocUltraPlusCore
+
+  U_Core : entity axi_soc_ultra_plus_core.AxiSocUltraPlusCore
       generic map (
          TPD_G             => TPD_G,
          BUILD_INFO_G      => BUILD_INFO_G,
@@ -130,6 +136,20 @@ begin
          vNIn           => vNIn);
 
 
+   -------------------------------------------------------------------------------------------------
+   -- Main Axi Crossbar
+   -------------------------------------------------------------------------------------------------
+   Reg0 : entity ldmx_ts.zCCM_Registers
+     generic map(
+       TPD_G          => TPD_G)
+     port map(
+       -- Axil interface
+       axilClk        => axilClk,
+       axilRst        => axilRst,
+       axilReadMaster  => mainAxilReadMasters(AXIL_TOP_REG_INDEX_C),   -- [in]
+       axilReadSlave   => mainAxilReadSlaves(AXIL_TOP_REG_INDEX_C),    -- [out]
+       axilWriteMaster => mainAxilWriteMasters(AXIL_TOP_REG_INDEX_C),  -- [in]
+       axilWriteSlave  => mainAxilWriteSlaves(AXIL_TOP_REG_INDEX_C));  -- [out
 
    -------------------------------------------------------------------------------------------------
    -- Main Axi Crossbar

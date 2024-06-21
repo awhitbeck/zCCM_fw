@@ -9,7 +9,7 @@
 #-----------------------------------------------------------------------------
 
 import pyrogue as pr
-
+import test_kv260
 
 class uart_bridge(pr.Device):
     def __init__(self,
@@ -42,3 +42,4 @@ class Application(pr.Device):
             hidden       = True,
         ))
 
+        self.add(test_kv260.zCCM_Registers(offset=0x3000))

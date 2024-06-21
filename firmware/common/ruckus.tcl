@@ -1,4 +1,4 @@
 # Load RUCKUS environment and library
 source -quiet $::env(RUCKUS_DIR)/vivado_proc.tcl
 
-loadSource -dir "$::DIR_PATH/rtl/"
+loadSource -lib ldmx_ts -dir "$::DIR_PATH/rtl/"
