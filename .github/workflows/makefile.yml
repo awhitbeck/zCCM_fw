@@ -15,4 +15,4 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: build
-      run: make
+      run: cd firmware/targets/test_kv260 ; make
