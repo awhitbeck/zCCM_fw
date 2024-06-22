@@ -17,4 +17,4 @@ jobs:
         fetch-depth: 0
 
     - name: build
-      run: source /data/Xilinx/Vivado/2023.2/settings64.sh ; export XILINXD_LICENSE_FILE=2100@xilinx-lic ; export LM_LICENSE_FILE=2100@xilinx-lic ; cd firmware/targets/test_kv260 ; make
+      run: source /data/Xilinx/Vivado/2023.2/settings64.sh ; export XILINXD_LICENSE_FILE=2100@xilinx-lic ; export LM_LICENSE_FILE=2100@xilinx-lic ; export OVERRIDE_SUBMODULE_LOCKS=1 ; cd firmware/targets/test_kv260 ; make
