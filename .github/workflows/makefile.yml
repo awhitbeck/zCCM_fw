@@ -1,0 +1,20 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: build
+      run: source /data/Xilinx/Vivado/2023.2/settings64.sh ; export XILINXD_LICENSE_FILE=2100@xilinx-lic ; export LM_LICENSE_FILE=2100@xilinx-lic ; cd firmware/targets/test_kv260 ; make
