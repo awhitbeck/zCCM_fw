@@ -68,7 +68,7 @@ begin
      -- AXI Lite registers
      axiSlaveWaitTxn(axilEp, syncAxilWriteMaster, syncAxilReadMaster, v.axilWriteSlave, v.axilReadSlave);
      
-     axiSlaveRegisterR(axilEp, X"04", 0, r.scratch);
+     axiSlaveRegister(axilEp, X"04", 0, v.scratch);
      
      axiSlaveDefault(axilEp, v.axilWriteSlave, v.axilReadSlave, AXI_RESP_DECERR_C);
      
