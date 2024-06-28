@@ -67,7 +67,7 @@ architecture Behavioral of test_kv260 is
        connectivity                   => X"0001"),
      AXIL_LOC_I2C_INDEX_C             => (    -- backplane I2C Interface
          baseAddr                     => AXIL_BASE_ADDR_G + X"1000",
-         addrBits                     => 8,
+         addrBits                     => 12,
          connectivity                 => X"0001"),
      AXIL_TOP_REG_INDEX_C             => (    -- Register Interface
          baseAddr                     => AXIL_BASE_ADDR_G + X"3000",

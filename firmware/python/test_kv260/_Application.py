@@ -22,7 +22,7 @@ class uart_bridge(pr.Device):
         self.addRemoteVariables(
             name         = 'SCRATCH',
             description  = 'Scratch register',
-            offset       = 0x38,
+            offset       = 0x800,
             bitSize      = 8,
             mode         = 'RW',
             number       = 1,

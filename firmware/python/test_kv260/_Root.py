@@ -20,10 +20,10 @@ class Root(pr.Root):
         super().__init__(**kwargs)
 
         self.memMap = rogue.hardware.axi.AxiMemMap('/dev/axi_memory_map')
-        self.srp = rogue.protocols.srp.SrpV3()
+        #self.srp = rogue.protocols.srp.SrpV3()
         
         self.add(kv260.Application(
-            memBase = self.srp,
+            memBase = self.memMap,
             offset  = 0x8000_0000,
             expand  = True,
         ))

@@ -49,15 +49,9 @@ architecture rtl of zCCM_Registers is
 
   signal r   : RegType := REG_INIT_C;
   signal rin : RegType;
-
-  signal syncAxilReadMaster  : AxiLiteReadMasterType;
-  signal syncAxilReadSlave   : AxiLiteReadSlaveType;
-  signal syncAxilWriteMaster : AxiLiteWriteMasterType;
-  signal syncAxilWriteSlave  : AxiLiteWriteSlaveType;  
-
   
 begin
-   comb : process (r, syncAxilReadMaster, syncAxilWriteMaster) is
+   comb : process (r, axilReadMaster, axilWriteMaster) is
       variable v      : RegType;
       variable axilEp : AxiLiteEndpointType;
 
@@ -66,15 +60,15 @@ begin
      v := r;
 
      -- AXI Lite registers
-     axiSlaveWaitTxn(axilEp, syncAxilWriteMaster, syncAxilReadMaster, v.axilWriteSlave, v.axilReadSlave);
+     axiSlaveWaitTxn(axilEp, axilWriteMaster, axilReadMaster, v.axilWriteSlave, v.axilReadSlave);
      
      axiSlaveRegister(axilEp, X"04", 0, v.scratch);
      
      axiSlaveDefault(axilEp, v.axilWriteSlave, v.axilReadSlave, AXI_RESP_DECERR_C);
      
      
-     syncAxilReadSlave  <= r.axilReadSlave;
-     syncAxilWriteSlave <= r.axilWriteSlave;
+     axilReadSlave  <= r.axilReadSlave;
+     axilWriteSlave <= r.axilWriteSlave;
      rin <= v;
 
    end process comb;
