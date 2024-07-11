@@ -43,7 +43,7 @@ architecture rtl of zCCM_Registers is
   end record RegType;
 
   constant REG_INIT_C : RegType := (
-    scratch => (others => '0'),
+    scratch        => x"DEAD_BEEF",
     axilReadSlave  => AXI_LITE_READ_SLAVE_INIT_C,
     axilWriteSlave => AXI_LITE_WRITE_SLAVE_INIT_C);
 
@@ -62,7 +62,7 @@ begin
      -- AXI Lite registers
      axiSlaveWaitTxn(axilEp, axilWriteMaster, axilReadMaster, v.axilWriteSlave, v.axilReadSlave);
      
-     axiSlaveRegister(axilEp, X"04", 0, v.scratch);
+     axiSlaveRegister(axilEp, x"004", 0, v.scratch);
      
      axiSlaveDefault(axilEp, v.axilWriteSlave, v.axilReadSlave, AXI_RESP_DECERR_C);
      
