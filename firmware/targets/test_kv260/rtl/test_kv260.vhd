@@ -36,7 +36,7 @@ library ldmx_ts;
 entity test_kv260 is
     generic (
       TPD_G        : time                      := 1 ns;
-      BUILD_INFO_G : BuildInfoType;
+      BUILD_INFO_G : BuildInfoType);
     Port (
       -- Kria K26 I/O Ports
       pmod       : inout slv(7 downto 0);
