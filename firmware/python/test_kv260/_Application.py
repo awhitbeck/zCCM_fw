@@ -35,11 +35,30 @@ class Application(pr.Device):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
 
-        self.add(uart_bridge(
-            name         = f'UART_Bridge',
-            offset       = 0x1000,
-            pollInterval = 0,
-            hidden       = True,
-        ))
+        # self.add(uart_bridge(
+        #     name         = f'UART_Bridge',
+        #     offset       = 0x1_0000,
+        #     pollInterval = 0,
+        #     hidden       = True,
+        # ))
 
-        self.add(test_kv260.zCCM_Registers(offset=0x3000))
+        self.add(test_kv260.zCCM_Registers(offset=0x2_0000))
+        self.add(pr.RemoteVariable(
+            name         = 'ReadRegister',
+            offset       = 0x2_0000,
+            bitSize      = 32,
+            mode         = 'RO',
+            pollInterval = 1,
+        ))
+        self.add(pr.RemoteVariable(
+            name         = 'WriteRegisterA',
+            offset       = 0x2_0100,
+            bitSize      = 32,
+            mode         = 'RW',
+        ))
+        self.add(pr.RemoteVariable(
+            name         = 'WriteRegisterB',
+            offset       = 0x2_0104,
+            bitSize      = 32,
+            mode         = 'RW',
+        ))
