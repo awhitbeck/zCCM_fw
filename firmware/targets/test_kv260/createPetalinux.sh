@@ -1,5 +1,19 @@
 #!/bin/sh
 
+xsa=$(realpath $1)
+echo $xsa
+
+name="test_kv260"
+if [ ! -d petalinux ]; then
+    echo "CREATING PETALINUX DIR"
+    mkdir petalinux
+fi
+
+cd petalinux
+petalinux-create --type project --template zynqMP --name $name
+cd $name
+
+petalinux-config --get-hw-description $xsa
 ##this should be run from project directory.
 
 hwDir="/data/awhitbe1/zCCM_fw/firmware/submodules/axi-soc-ultra-plus-core/hardware/XilinxKriaKv260/"
