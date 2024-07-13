@@ -84,7 +84,7 @@ architecture mapping of Application is
    signal axilReadSlaves   : AxiLiteReadSlaveArray(MAIN_XBAR_MASTERS_C-1 downto 0)   := (others => AXI_LITE_READ_SLAVE_EMPTY_DECERR_C);
 
    constant INI_WRITE_REG_C : Slv32Array(1 downto 0) := (others => x"DEAD_BEEF");
-   signal readReg  : slv(31 downto 0) := x"DEAD_BEEF";
+   signal readReg  : slv32Array(1 downto 0) := (others => x"DEAD_BEEF");
    signal writeReg : Slv32Array(1 downto 0) := (others => x"DEAD_BEEF");
    
 begin
@@ -94,7 +94,7 @@ begin
          TPD_G           => TPD_G,
          NUM_WRITE_REG_G => 2,
          INI_WRITE_REG_G => INI_WRITE_REG_C,
-         NUM_READ_REG_G  => 1)
+         NUM_READ_REG_G  => 2)
       port map (
          -- AXI-Lite Bus
          axiClk          => axilClk,
@@ -105,7 +105,7 @@ begin
          axiWriteSlave   => axilWriteSlaves(AXIL_VERSION_INDEX_C),
          -- User Read/Write registers
          writeRegister   => writeReg,
-         readRegister(0) => readReg);
+         readRegister    => readReg);
 
 
   
