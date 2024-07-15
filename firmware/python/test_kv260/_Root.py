@@ -21,9 +21,15 @@ class Root(pr.Root):
 
         self.memMap = rogue.hardware.axi.AxiMemMap('/dev/axi_memory_map')
         #self.srp = rogue.protocols.srp.SrpV3()
+
+        self.add(socCore.AxiSocCore(
+            memBase      = self.memMap,
+            offset       = 0x04_0000_0000,
+            numDmaLanes  = 2,
+        ))
         
         self.add(kv260.Application(
             memBase = self.memMap,
-            offset  = 0x8000_0000,
+            offset  = 0x04_8000_0000,
             expand  = True,
         ))
