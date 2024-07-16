@@ -5,7 +5,7 @@ import rogue.hardware.axi
 
 import pyrogue as pr
 
-#import axi_soc_ultra_plus_core as socCore
+import axi_soc_ultra_plus_core as socCore
 import test_kv260 as kv260
 
 rogue.Version.minVersion('6.0.0')
