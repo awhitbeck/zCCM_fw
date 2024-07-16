@@ -45,27 +45,27 @@ class Application(pr.Device):
         self.add(test_kv260.zCCM_Registers(offset=0x2_0000))
         self.add(pr.RemoteVariable(
             name         = 'ReadRegisterA',
-            offset       = 0x2_0000,
+            offset       = 0x0,
             bitSize      = 32,
             mode         = 'RO',
             pollInterval = 1,
         ))
         self.add(pr.RemoteVariable(
             name         = 'ReadRegisterB',
-            offset       = 0x2_0004,
+            offset       = 0x4,
             bitSize      = 32,
             mode         = 'RO',
             pollInterval = 1,
         ))
         self.add(pr.RemoteVariable(
             name         = 'WriteRegisterA',
-            offset       = 0x2_0100,
+            offset       = 0x100,
             bitSize      = 32,
             mode         = 'RW',
         ))
         self.add(pr.RemoteVariable(
             name         = 'WriteRegisterB',
-            offset       = 0x2_0104,
+            offset       = 0x104,
             bitSize      = 32,
             mode         = 'RW',
         ))
