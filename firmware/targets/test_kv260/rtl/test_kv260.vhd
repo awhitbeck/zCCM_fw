@@ -110,6 +110,7 @@ begin
    U_App : entity ldmx_ts.Application
       generic map (
          TPD_G            => TPD_G,
+         AXIL_CLK_FREQ_G  => 100.0E+6, -- 100MHz
          AXIL_BASE_ADDR_G => APP_ADDR_OFFSET_C)
       port map (
          -- I2C.SCL Ports
