@@ -12,20 +12,36 @@ rogue.Version.minVersion('6.0.0')
 
 class Root(pr.Root):
     def __init__(self,
-            ip           = '10.0.0.200', # ETH Host Name (or IP address)
-            epics_enable = False,
-            epics_prefix = 'kv260_ioc',
-            zmqSrvEn     = True,  # Flag to include the ZMQ server
+            ip       = None, # ETH Host Name (or IP address)
+            zmqSrvEn = False,  # Flag to include the ZMQ server
             **kwargs):
         super().__init__(**kwargs)
 
-        self.memMap = rogue.hardware.axi.AxiMemMap('/dev/axi_memory_map')
-        #self.srp = rogue.protocols.srp.SrpV3()
+        if zmqSrvEn:
+            self.zmqServer = pr.interfaces.ZmqServer(root=self, addr='127.0.0.1', port=0)
+            self.addInterface(self.zmqServer)
 
+        # Check if running local on SoC
+        if ip != None:
+
+            # Check if we can ping the device and TCP socket not open
+            socCore.connectionTest(ip)
+
+            # Start a TCP Bridge Client, Connect remote server at 'ethReg' ports 9000 & 9001.
+            self.memMap = rogue.interfaces.memory.TcpClient(ip,9000)
+
+            # DMA[lane=0][TDEST=0] = ports 10000 & 10001
+            self.tcpStream = rogue.interfaces.stream.TcpClient(ip,10000)
+
+        else:
+            # Use the memory map driver
+            self.memMap = rogue.hardware.axi.AxiMemMap('/dev/axi_memory_map')
+
+        # Added the devices
         self.add(socCore.AxiSocCore(
             memBase      = self.memMap,
             offset       = 0x04_0000_0000,
-            numDmaLanes  = 2,
+            numDmaLanes  = 1,
         ))
         
         self.add(kv260.Application(

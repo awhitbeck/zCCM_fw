@@ -1,0 +1,9 @@
+import os
+import sys
+import pyrogue as pr
+pr.addLibraryPath('/app/rogue.zip/python')
+import test_kv260
+
+if __name__ == "__main__":
+    with test_kv260.Root(ip=None,initRead=True) as root:
+        pr.waitCntrlC()
