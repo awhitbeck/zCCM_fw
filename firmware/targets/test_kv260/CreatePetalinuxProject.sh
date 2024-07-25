@@ -2,7 +2,7 @@
 ####################################################
 
 # Release the petalinux with static IP address
-export SOC_IP_STATIC="10.0.0.10"
+export SOC_IP_STATIC="192.168.0.2"
 
 # Define the hardware type
 # Note: Must match the axi-soc-ultra-plus-core/hardware directory name
