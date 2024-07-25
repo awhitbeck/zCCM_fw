@@ -1,6 +1,9 @@
 #!/bin/sh
 ####################################################
 
+# Release the petalinux with static IP address
+export SOC_IP_STATIC="10.0.0.10"
+
 # Define the hardware type
 # Note: Must match the axi-soc-ultra-plus-core/hardware directory name
 hwType=XilinxKriaKv260
