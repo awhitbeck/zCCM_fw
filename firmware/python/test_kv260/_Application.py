@@ -18,16 +18,53 @@ class uart_bridge(pr.Device):
             **kwargs):
         super().__init__(description=description, **kwargs)
 
-
         self.addRemoteVariables(
             name         = 'SCRATCH',
             description  = 'Scratch register',
-            offset       = 0x800,
+            offset       = 0x38,
             bitSize      = 8,
             mode         = 'RW',
             number       = 1,
             stride       = 0,
             pollInterval = pollInterval
+        )
+
+class gpio(pr.Device):
+    def __init__(self,
+                 description = "Container for xxx",
+                 pollInterval = 1,
+            **kwargs):
+	super().__init__(description=description, **kwargs)
+
+
+        self.addRemoteVariables(
+            name         = 'GPIO',
+            description  = 'GPIO',
+            offset       = 0x0,
+            bitSize      = 8,
+            mode         = 'RW',
+            number       = 1,
+            stride       = 0,
+            pollInterval = pollInterval
+        )
+
+class eeprom(pr.Device):
+    def __init__(self,
+                 description = "Container for xxx",
+                 pollInterval = 1,
+            **kwargs):
+        super().__init__(description=description, **kwargs)
+
+
+        self.addRemoteVariables(
+	    name         = 'EEPROM',
+            description  = 'EEPROM',
+            offset       = 0x0,
+            bitSize      = 8,
+            mode         = 'RW',
+            number       = 1,
+            stride       = 0,
+	    pollInterval = pollInterval
         )
         
 
@@ -35,13 +72,27 @@ class Application(pr.Device):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
 
-        # self.add(uart_bridge(
-        #     name         = f'UART_Bridge',
-        #     offset       = 0x1_0000,
-        #     pollInterval = 0,
-        #     hidden       = True,
-        # ))
+        self.add(uart_bridge(
+            name         = f'UART_Bridge',
+            offset       = 0x1_0000,
+            pollInterval = 0,
+            hidden       = False,
+        ))
 
+        self.add(gpio(
+            name         = f'GPIO',
+	    offset       = 0x1_0400,
+            pollInterval = 0,
+            hidden       = False,
+        ))
+
+        self.add(eeprom(
+            name         = f'EEPROM',
+	    offset       = 0x1_0800,
+            pollInterval = 0,
+            hidden       = False,
+	))
+        
         self.add(test_kv260.zCCM_Registers(offset=0x2_0000))
         self.add(pr.RemoteVariable(
             name         = 'ReadRegisterA',
