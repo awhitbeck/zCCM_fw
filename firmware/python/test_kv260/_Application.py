@@ -74,21 +74,21 @@ class Application(pr.Device):
 
         self.add(uart_bridge(
             name         = f'UART_Bridge',
-            offset       = 0x1_0000,
+            offset       = 0x1_0800,
             pollInterval = 0,
             hidden       = False,
         ))
 
         self.add(gpio(
             name         = f'GPIO',
-	    offset       = 0x1_0400,
+	    offset       = 0x1_0000,
             pollInterval = 0,
             hidden       = False,
         ))
 
         self.add(eeprom(
             name         = f'EEPROM',
-	    offset       = 0x1_0800,
+	    offset       = 0x1_0400,
             pollInterval = 0,
             hidden       = False,
 	))
