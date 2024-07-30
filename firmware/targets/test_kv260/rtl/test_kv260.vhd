@@ -113,14 +113,8 @@ begin
          AXIL_CLK_FREQ_G  => 100.0E+6, -- 100MHz
          AXIL_BASE_ADDR_G => APP_ADDR_OFFSET_C)
       port map (
-         -- I2C.SCL Ports
-         i2cScl(2)         => pmod(0),
-         i2cScl(1)         => pmod(2),
-         i2cScl(0)         => pmod(4),
-         -- I2C.SDA Ports
-         i2cSda(2)         => pmod(1),
-         i2cSda(1)         => pmod(3),
-         i2cSda(0)         => pmod(5),
+         -- PMOD Ports
+         pmod              => pmod,
          -- AXI-Lite Interface (axilClk domain)
          axilClk           => axilClk,
          axilRst           => axilRst,

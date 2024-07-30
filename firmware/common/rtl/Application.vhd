@@ -40,9 +40,8 @@ entity Application is
       AXIL_CLK_FREQ_G   : real                 := 125.0e6;
       AXIL_BASE_ADDR_G : slv(31 downto 0));
    port (
-      -- I2C Ports
-      i2cSda            : inout slv(2 downto 0);
-      i2cScl            : inout slv(2 downto 0);
+      -- PMOD Ports
+      pmod              : inout slv(7 downto 0);
       -- AXI-Lite Interface (axilClk domain)
       axilClk           : in    sl;
       axilRst           : in    sl;
@@ -75,8 +74,8 @@ architecture mapping of Application is
          addrBits                     => 16,
          connectivity                 => X"0001"));
 
-   -- constant I2C_SCL_FREQ_C  : real := ite(SIMULATION_G, 2.0e6, 100.0E+3);
-   -- constant I2C_MIN_PULSE_C : real := ite(SIMULATION_G, 50.0e-9, 100.0E-9);
+   constant I2C_SCL_FREQ_C  : real := ite(SIMULATION_G, 2.0e6, 100.0E+3);
+   constant I2C_MIN_PULSE_C : real := ite(SIMULATION_G, 50.0e-9, 100.0E-9);
    
    signal axilWriteMasters : AxiLiteWriteMasterArray(MAIN_XBAR_MASTERS_C-1 downto 0) := (others => AXI_LITE_WRITE_MASTER_INIT_C);
    signal axilWriteSlaves  : AxiLiteWriteSlaveArray(MAIN_XBAR_MASTERS_C-1 downto 0)  := (others => AXI_LITE_WRITE_SLAVE_EMPTY_DECERR_C);
@@ -149,42 +148,52 @@ begin
    -------------------------------------------------------------------------------------------------
    -- Local I2C
    -------------------------------------------------------------------------------------------------
-   -- U_AxiI2cRegMaster_LOC : entity surf.AxiI2cRegMaster
-   --    generic map (
-   --       TPD_G             => TPD_G,
-   --       AXIL_PROXY_G      => false,
-   --       DEVICE_MAP_G      => (
-   --          0              => MakeI2cAxiLiteDevType(                    -- GPIO
-   --             i2cAddress  => "1000001",
-   --             dataSize    => 8,
-   --             addrSize    => 8,
-   --             endianness  => '1'),
-   --          1              => MakeI2cAxiLiteDevType(                    -- EEPROM
-   --             i2cAddress  => "1010000",
-   --             dataSize    => 8,
-   --             addrSize    => 8,
-   --             endianness  => '1',
-   --             repeatStart => '0'),
-   --          2              => MakeI2cAxiLiteDevType(                    -- UART-bridge
-   --             i2cAddress  => "1001101",
-   --             dataSize    => 8, 
-   --             addrSize    => 8,
-   --             endianness  => '1',
-   --             repeatStart => '0')),
-   --       I2C_SCL_FREQ_G    => I2C_SCL_FREQ_C,
-   --       I2C_MIN_PULSE_G   => I2C_MIN_PULSE_C,
-   --       AXI_CLK_FREQ_G    => AXIL_CLK_FREQ_G)
-   --    port map (
-   --       axiClk         => axilClk,                                     -- [in]
-   --       axiRst         => axilRst,                                     -- [in]
-   --       axiReadMaster  => axilReadMasters(AXIL_LOC_I2C_INDEX_C),   -- [in]
-   --       axiReadSlave   => axilReadSlaves(AXIL_LOC_I2C_INDEX_C),    -- [out]
-   --       axiWriteMaster => axilWriteMasters(AXIL_LOC_I2C_INDEX_C),  -- [in]
-   --       axiWriteSlave  => axilWriteSlaves(AXIL_LOC_I2C_INDEX_C),   -- [out]
-   --       --         sel            => sel,             -- [out]
-   --       scl            => i2cScl(0),                                     -- [inout]
-   --       sda            => i2cSda(0));                                    -- [inout]
+   U_AxiI2cRegMaster_LOC : entity surf.AxiI2cRegMaster
+      generic map (
+         TPD_G             => TPD_G,
+         AXIL_PROXY_G      => false,
+         DEVICE_MAP_G      => (
+            0              => MakeI2cAxiLiteDevType(                    -- GPIO
+               i2cAddress  => "1000001",
+               dataSize    => 8,
+               addrSize    => 8,
+               endianness  => '1'),
+            1              => MakeI2cAxiLiteDevType(                    -- EEPROM
+               i2cAddress  => "1010000",
+               dataSize    => 8,
+               addrSize    => 8,
+               endianness  => '1',
+               repeatStart => '0'),
+            2              => MakeI2cAxiLiteDevType(                    -- UART-bridge
+               i2cAddress  => "1001101",
+               dataSize    => 8, 
+               addrSize    => 8,
+               endianness  => '1',
+               repeatStart => '0')),
+         I2C_SCL_FREQ_G    => I2C_SCL_FREQ_C,
+         I2C_MIN_PULSE_G   => I2C_MIN_PULSE_C,
+         AXI_CLK_FREQ_G    => AXIL_CLK_FREQ_G)
+      port map (
+         axiClk         => axilClk,                                     -- [in]
+         axiRst         => axilRst,                                     -- [in]
+         axiReadMaster  => axilReadMasters(AXIL_LOC_I2C_INDEX_C),   -- [in]
+         axiReadSlave   => axilReadSlaves(AXIL_LOC_I2C_INDEX_C),    -- [out]
+         axiWriteMaster => axilWriteMasters(AXIL_LOC_I2C_INDEX_C),  -- [in]
+         axiWriteSlave  => axilWriteSlaves(AXIL_LOC_I2C_INDEX_C),   -- [out]
+         --         sel            => sel,             -- [out]
+         scl            => pmod(0),                                     -- [inout]
+         sda            => pmod(1));                                    -- [inout]
 
-
+  ------------------------
+  -- PMOD IO buffer
+  ------------------------
+  GEN_VEC : for i in 7 downto 2 generate
+    U_IOBUF : entity surf.IoBufWrapper
+      port map (
+        I  => writeReg(0)(i-2),
+        O  => readReg(0)(i-2),
+        IO => pmod(i),
+        T  => writeReg(1)(i-2));
+  end generate GEN_VEC;
   
 end mapping;  
