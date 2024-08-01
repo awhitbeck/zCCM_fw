@@ -154,22 +154,37 @@ begin
          AXIL_PROXY_G      => false,
          DEVICE_MAP_G      => (
             0              => MakeI2cAxiLiteDevType(                    -- GPIO
-               i2cAddress  => "1000001",
+               i2cAddress  => "1000001",                                --x41
                dataSize    => 8,
                addrSize    => 8,
                endianness  => '1'),
             1              => MakeI2cAxiLiteDevType(                    -- EEPROM
-               i2cAddress  => "1010000",
+               i2cAddress  => "1010000",                                --x50
                dataSize    => 8,
                addrSize    => 8,
                endianness  => '1',
                repeatStart => '0'),
             2              => MakeI2cAxiLiteDevType(                    -- UART-bridge
-               i2cAddress  => "1001101",
+               i2cAddress  => "1001101",                                --x4D
+               dataSize    => 8, 
+               addrSize    => 16,
+               endianness  => '1',
+               repeatStart => '0'),
+            3              => MakeI2cAxiLiteDevType(                    -- I2C
+                                                                        --extenderv1
+               i2cAddress  => "0111101",                                --x3D
                dataSize    => 8, 
                addrSize    => 8,
                endianness  => '1',
-               repeatStart => '0')),
+               repeatStart => '0'),
+            4              => MakeI2cAxiLiteDevType(                    -- I2C
+                                                                        --extenderv2
+               i2cAddress  => "1110101",                                --x75
+               dataSize    => 8, 
+               addrSize    => 8,
+               endianness  => '1',
+               repeatStart => '0')                                                                              
+            ),
          I2C_SCL_FREQ_G    => I2C_SCL_FREQ_C,
          I2C_MIN_PULSE_G   => I2C_MIN_PULSE_C,
          AXI_CLK_FREQ_G    => AXIL_CLK_FREQ_G)
