@@ -66,11 +66,11 @@ architecture mapping of Application is
        addrBits                       => 16,
        connectivity                   => X"0001"),
      AXIL_LOC_I2C_INDEX_C             => (    -- backplane I2C Interface
-         baseAddr                     => AXIL_BASE_ADDR_G + X"10000",
+         baseAddr                     => AXIL_BASE_ADDR_G + X"100000",
          addrBits                     => 16,
          connectivity                 => X"0001"),
      AXIL_TOP_REG_INDEX_C             => (    -- Register Interface
-         baseAddr                     => AXIL_BASE_ADDR_G + X"20000",
+         baseAddr                     => AXIL_BASE_ADDR_G + X"200000",
          addrBits                     => 16,
          connectivity                 => X"0001"));
 
@@ -164,26 +164,27 @@ begin
                addrSize    => 8,
                endianness  => '1',
                repeatStart => '0'),
-            2              => MakeI2cAxiLiteDevType(                    -- UART-bridge
-               i2cAddress  => "1001101",                                --x4D
-               dataSize    => 8, 
-               addrSize    => 16,
-               endianness  => '1',
-               repeatStart => '0'),
-            3              => MakeI2cAxiLiteDevType(                    -- I2C
+            2              => MakeI2cAxiLiteDevType(                    -- I2C
                                                                         --extenderv1
                i2cAddress  => "0111101",                                --x3D
                dataSize    => 8, 
                addrSize    => 8,
                endianness  => '1',
                repeatStart => '0'),
-            4              => MakeI2cAxiLiteDevType(                    -- I2C
+            3              => MakeI2cAxiLiteDevType(                    -- I2C
                                                                         --extenderv2
                i2cAddress  => "1110101",                                --x75
                dataSize    => 8, 
                addrSize    => 8,
                endianness  => '1',
-               repeatStart => '0')                                                                              
+               repeatStart => '0'),
+            4              => MakeI2cAxiLiteDevType(                    -- UART-bridge
+               i2cAddress  => "1001101",                                --x4D
+               dataSize    => 8, 
+               addrSize    => 12,
+               endianness  => '1',
+               repeatStart => '0')
+
             ),
          I2C_SCL_FREQ_G    => I2C_SCL_FREQ_C,
          I2C_MIN_PULSE_G   => I2C_MIN_PULSE_C,
