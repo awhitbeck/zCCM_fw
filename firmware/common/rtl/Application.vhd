@@ -31,8 +31,6 @@ use surf.I2cPkg.all;
 library axi_soc_ultra_plus_core;
 use axi_soc_ultra_plus_core.AxiSocUltraPlusPkg.all;
 
-library ldmx_ts;
-
 entity Application is
    generic (
       TPD_G            : time := 1 ns;
@@ -111,7 +109,7 @@ begin
    -------------------------------------------------------------------------------------------------
    -- Register Definitions
    -------------------------------------------------------------------------------------------------
-   Reg0 : entity ldmx_ts.zCCM_Registers
+   Reg0 : entity work.zCCM_Registers
      generic map(
        TPD_G          => TPD_G)
      port map(

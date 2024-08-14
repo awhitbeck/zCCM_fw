@@ -56,3 +56,6 @@ slprj*
 *.pdi
 *.bif
 *.elf
+
+# ghdl products
+*.cf

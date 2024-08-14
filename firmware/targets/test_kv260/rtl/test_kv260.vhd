@@ -31,8 +31,6 @@ use surf.I2cPkg.all;
 library axi_soc_ultra_plus_core;
 use axi_soc_ultra_plus_core.AxiSocUltraPlusPkg.all;
 
-library ldmx_ts;
-
 entity test_kv260 is
     generic (
       TPD_G        : time                      := 1 ns;
@@ -107,7 +105,7 @@ begin
    --------------
    -- Application
    --------------
-   U_App : entity ldmx_ts.Application
+   U_App : entity work.Application
       generic map (
          TPD_G            => TPD_G,
          AXIL_CLK_FREQ_G  => 100.0E+6, -- 100MHz
