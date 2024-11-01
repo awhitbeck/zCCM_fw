@@ -28,6 +28,8 @@ use surf.AxiLitePkg.all;
 
 use surf.I2cPkg.all;
 
+library ldmx_ts;
+
 library axi_soc_ultra_plus_core;
 use axi_soc_ultra_plus_core.AxiSocUltraPlusPkg.all;
 
@@ -105,7 +107,7 @@ begin
    --------------
    -- Application
    --------------
-   U_App : entity work.Application
+   U_App : entity ldmx_ts.Application
       generic map (
          TPD_G            => TPD_G,
          AXIL_CLK_FREQ_G  => 100.0E+6, -- 100MHz
