@@ -22,6 +22,5 @@ jobs:
       run: |
         source /data/Xilinx/Vivado/2023.2/settings64.sh
         cd firmware/targets/test_kv260
-        make -f ghdl.mk VIVADO=/data/Xilinx/Vivado/2023.2/
         make 
       shell: sh
