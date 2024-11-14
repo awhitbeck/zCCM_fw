@@ -1,4 +1,4 @@
-VIVADO=
+VIVADO=/data/awhitbe1/Vivado/2024.1/Vivado/2024.1/
 TARGETDIR=$(PWD)
 PROJECTDIR=$(TARGETDIR)/../../
 GHDL=ghdl
@@ -35,7 +35,7 @@ import :
 	@echo "============================================================================="
 	@echo Importing: work
 	@echo "============================================================================="
-	$(GHDL) -i $(GHDLFLAGS) --work=work $(PROJECTDIR)/common/rtl/*
+	$(GHDL) -i $(GHDLFLAGS) --work=ldmx_ts $(PROJECTDIR)/common/rtl/*
 	@echo "============================================================================="
 
 
@@ -43,8 +43,8 @@ syntax: import
 	@echo "============================================================================="
 	@echo Syntax Checking:
 	@echo "============================================================================="
-	$(GHDL) -s $(GHDLFLAGS) --work=work $(TARGETDIR)/rtl/test_kv260.vhd
-	$(GHDL) -s $(GHDLFLAGS) --work=work $(PROJECTDIR)/common/rtl/Application.vhd
+	$(GHDL) -s $(GHDLFLAGS) --work=ldmx_ts $(TARGETDIR)/rtl/test_kv260.vhd
+	$(GHDL) -s $(GHDLFLAGS) --work=ldmx_ts $(PROJECTDIR)/common/rtl/Application.vhd
 
 makefiles: import
 	@echo "============================================================================="
