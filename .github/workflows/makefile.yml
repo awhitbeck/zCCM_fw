@@ -21,7 +21,7 @@ jobs:
         submodules: recursive
           
     - name: Checkout LFS objects
-        run: git lfs checkout
+      run: git lfs checkout
         
     - name: build
       run: |
