@@ -15,24 +15,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Create LFS file list
-        run: git lfs ls-files --long | cut -d ' ' -f1 | sort > .lfs-assets-id
-
-      - name: LFS Cache
-        uses: actions/cache@v3
-        with:
-          path: .git/lfs/objects
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-          restore-keys: |
-            ${{ runner.os }}-lfs-
+        uses: actions/checkout@v4
 
       - name: Git LFS Pull
-        run: git lfs pull
+        run: |
+          git lfs fetch 
+          git lfs pull
       - name: build
         run: |
           source /data/Xilinx/Vivado/2023.2/settings64.sh
+          for i in `find firmware/submodules -maxdepth 1 -mindepth 1 -type d`; do cd $i ; git lfs fetch ; git lfs pull ; cd - ; done
           cd firmware/targets/test_kv260
           export OVERRIDE_SUBMODULE_LOCKS=1
           make 
