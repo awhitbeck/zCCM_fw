@@ -14,19 +14,26 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout github repo
-      uses: actions/checkout@v4
-      with:
-        lfs: true
-        submodules: recursive
-          
-    - name: Checkout LFS objects
-      run: git lfs checkout
-        
-    - name: build
-      run: |
-        source /data/Xilinx/Vivado/2023.2/settings64.sh
-        cd firmware/targets/test_kv260
-        export OVERRIDE_SUBMODULE_LOCKS=1
-        make 
-      shell: sh
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create LFS file list
+        run: git lfs ls-files --long | cut -d ' ' -f1 | sort > .lfs-assets-id
+
+      - name: LFS Cache
+        uses: actions/cache@v3
+        with:
+          path: .git/lfs/objects
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+          restore-keys: |
+            ${{ runner.os }}-lfs-
+
+      - name: Git LFS Pull
+        run: git lfs pull
+      - name: build
+        run: |
+          source /data/Xilinx/Vivado/2023.2/settings64.sh
+          cd firmware/targets/test_kv260
+          export OVERRIDE_SUBMODULE_LOCKS=1
+          make 
+        shell: sh
